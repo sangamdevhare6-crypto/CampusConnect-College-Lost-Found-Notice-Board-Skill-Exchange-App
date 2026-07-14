@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CampusConnect — Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-pin">📌</span>
+        <div>
+          <h1>CampusConnect</h1>
+          <p class="tagline">the board where campus talks to itself</p>
+        </div>
+      </div>
+      <div class="stats-strip" id="statsStrip">
+        <div class="stat"><span id="statLF">–</span><label>open lost &amp; found</label></div>
+        <div class="stat"><span id="statNotices">–</span><label>notices pinned</label></div>
+        <div class="stat"><span id="statSkills">–</span><label>skills listed</label></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== TAB NAV (sticky-note tabs) ===== -->
+  <nav class="tab-nav">
+    <button class="tab-btn active" data-tab="lostfound" style="--tab-color:#D8564A">
+      <span class="tab-icon">🔎</span> Lost &amp; Found
+    </button>
+    <button class="tab-btn" data-tab="notices" style="--tab-color:#F0A93B">
+      <span class="tab-icon">📣</span> Notice Board
+    </button>
+    <button class="tab-btn" data-tab="skills" style="--tab-color:#4C8A6E">
+      <span class="tab-icon">🔁</span> Skill Exchange
+    </button>
+  </nav>
+
+  <main class="board">
+
+    <!-- ================= LOST & FOUND ================= -->
+    <section class="panel active" id="panel-lostfound">
+      <div class="panel-head">
+        <div>
+          <h2>Lost &amp; Found</h2>
+          <p class="panel-sub">Kahi haravla ka? Kinva ekhadi vastu sapadli? Ithe pin kara.</p>
+        </div>
+        <button class="btn btn-primary" data-open-modal="modal-lostfound">+ Post an item</button>
+      </div>
+
+      <div class="toolbar">
+        <input type="search" id="lfSearch" placeholder="Item, location shodha…" />
+        <select id="lfTypeFilter">
+          <option value="">All</option>
+          <option value="lost">Lost</option>
+          <option value="found">Found</option>
+        </select>
+        <select id="lfStatusFilter">
+          <option value="">All status</option>
+          <option value="open">Open</option>
+          <option value="resolved">Resolved</option>
+        </select>
+      </div>
+
+      <div class="card-grid" id="lfGrid">
+        <p class="empty-state">Loading…</p>
+      </div>
+    </section>
+
+    <!-- ================= NOTICE BOARD ================= -->
+    <section class="panel" id="panel-notices">
+      <div class="panel-head">
+        <div>
+          <h2>Notice Board</h2>
+          <p class="panel-sub">Events, deadlines, urgent updates — sagla ekach thikani.</p>
+        </div>
+        <button class="btn btn-primary" data-open-modal="modal-notice">+ New notice</button>
+      </div>
+
+      <div class="toolbar">
+        <div class="chip-row" id="noticeCategoryChips">
+          <button class="chip active" data-cat="all">All</button>
+          <button class="chip" data-cat="urgent">Urgent</button>
+          <button class="chip" data-cat="event">Event</button>
+          <button class="chip" data-cat="exam">Exam</button>
+          <button class="chip" data-cat="general">General</button>
+        </div>
+      </div>
+
+      <div class="card-grid" id="noticeGrid">
+        <p class="empty-state">Loading…</p>
+      </div>
+    </section>
+
+    <!-- ================= SKILL EXCHANGE ================= -->
+    <section class="panel" id="panel-skills">
+      <div class="panel-head">
+        <div>
+          <h2>Skill Exchange</h2>
+          <p class="panel-sub">Tumhala jamna skill shikva, hava aslela skill shodha.</p>
+        </div>
+        <button class="btn btn-primary" data-open-modal="modal-skill">+ List a skill</button>
+      </div>
+
+      <div class="toolbar">
+        <input type="search" id="skillSearch" placeholder="Skill shodha (e.g. Photoshop, Guitar, Python)…" />
+      </div>
+
+      <div class="card-grid" id="skillGrid">
+        <p class="empty-state">Loading…</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>Made for campus, by students. CampusConnect — 2026.</p>
+  </footer>
+
+  <!-- ===================== MODALS ===================== -->
+
+  <!-- Lost & Found modal -->
+  <div class="modal-overlay" id="modal-lostfound">
+    <form class="modal-card" id="formLostFound">
+      <button type="button" class="modal-close" data-close-modal>&times;</button>
+      <h3>Post a Lost / Found item</h3>
+
+      <div class="segmented" id="lfTypeSegment">
+        <button type="button" class="seg-btn active" data-value="lost">I lost something</button>
+        <button type="button" class="seg-btn" data-value="found">I found something</button>
+      </div>
+      <input type="hidden" id="lfType" value="lost" />
+
+      <label>Item name *
+        <input type="text" id="lfItemName" placeholder="e.g. Blue water bottle" required />
+      </label>
+      <label>Description
+        <textarea id="lfDescription" rows="2" placeholder="Brand, color, any identifying detail…"></textarea>
+      </label>
+      <label>Location
+        <input type="text" id="lfLocation" placeholder="e.g. Library, 2nd floor" />
+      </label>
+      <label>Your name
+        <input type="text" id="lfPostedBy" placeholder="e.g. Rahul S." />
+      </label>
+      <label>Contact (phone / email) *
+        <input type="text" id="lfContact" placeholder="9876543210 or you@college.edu" required />
+      </label>
+
+      <button type="submit" class="btn btn-primary btn-block">Pin it to the board</button>
+      <p class="form-msg" id="lfFormMsg"></p>
+    </form>
+  </div>
+
+  <!-- Notice modal -->
+  <div class="modal-overlay" id="modal-notice">
+    <form class="modal-card" id="formNotice">
+      <button type="button" class="modal-close" data-close-modal>&times;</button>
+      <h3>New Notice</h3>
+
+      <label>Title *
+        <input type="text" id="noticeTitle" placeholder="e.g. Fest registrations open" required />
+      </label>
+      <label>Description
+        <textarea id="noticeDescription" rows="3" placeholder="Details, deadline, link…"></textarea>
+      </label>
+      <label>Category
+        <select id="noticeCategory">
+          <option value="general">General</option>
+          <option value="event">Event</option>
+          <option value="exam">Exam</option>
+          <option value="urgent">Urgent</option>
+        </select>
+      </label>
+      <label>Posted by
+        <input type="text" id="noticePostedBy" placeholder="e.g. Student Council" />
+      </label>
+
+      <button type="submit" class="btn btn-primary btn-block">Pin notice</button>
+      <p class="form-msg" id="noticeFormMsg"></p>
+    </form>
+  </div>
+
+  <!-- Skill modal -->
+  <div class="modal-overlay" id="modal-skill">
+    <form class="modal-card" id="formSkill">
+      <button type="button" class="modal-close" data-close-modal>&times;</button>
+      <h3>List a Skill</h3>
+
+      <label>Your name *
+        <input type="text" id="skillName" placeholder="e.g. Priya M." required />
+      </label>
+      <label>Skill you can teach *
+        <input type="text" id="skillOffered" placeholder="e.g. Guitar basics" required />
+      </label>
+      <label>Skill you want to learn
+        <input type="text" id="skillWanted" placeholder="e.g. Photoshop (optional)" />
+      </label>
+      <label>Description
+        <textarea id="skillDescription" rows="2" placeholder="Level, availability, mode (online/offline)…"></textarea>
+      </label>
+      <label>Contact (phone / email) *
+        <input type="text" id="skillContact" placeholder="9876543210 or you@college.edu" required />
+      </label>
+
+      <button type="submit" class="btn btn-primary btn-block">Post to Skill Exchange</button>
+      <p class="form-msg" id="skillFormMsg"></p>
+    </form>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
